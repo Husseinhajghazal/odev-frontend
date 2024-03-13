@@ -5,41 +5,59 @@
   import { users } from "../../store/users";
   import { isOverlayOpen } from "../../store/overlay";
   import { fly } from "svelte/transition";
+  import { getOneUser } from "../../services/getOneUser";
   let myUser = [];
   users.subscribe((val) => (myUser = val));
 </script>
 
-<table class="w-100">
-  <thead>
-    <tr>
-      {#each heads as head}
-        <th>{head}</th>
-      {/each}
-    </tr>
-  </thead>
-  <tbody>
-    {#each myUser as user}
-      <tr transition:fly={{ x: -100, duration: 400 }}>
-        <td>{user.email}</td>
-        <td>{user.firstname} {user.lastname}</td>
-        <td class={user.role}><p>{user.role}</p></td>
-        <td class={user.status}><p>{user.status}</p></td>
-        <td>
-          <div class="d-flex gap-3">
-            <button class="edit-icon" on:click={() => isOverlayOpen.set(true)}>
-              <Icon icon="uil:edit" width="24" height="24" />
-            </button>
-            <button class="delete-icon" on:click={() => deleteUser(user.id)}>
-              <Icon icon="material-symbols:delete" width="24" height="24" />
-            </button>
-          </div>
-        </td>
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        {#each heads as head}
+          <th>{head}</th>
+        {/each}
       </tr>
-    {/each}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {#each myUser as user}
+        <tr transition:fly={{ x: -100, duration: 400 }}>
+          <td>{user.email}</td>
+          <td>{user.firstname} {user.lastname}</td>
+          <td class={user.role}><p>{user.role}</p></td>
+          <td class={user.status}><p>{user.status}</p></td>
+          <td>
+            <div class="d-flex gap-3">
+              <button
+                class="edit-icon"
+                on:click={async () => {
+                  await getOneUser(user.id);
+                  isOverlayOpen.set(true);
+                }}
+              >
+                <Icon icon="uil:edit" width="24" height="24" />
+              </button>
+              <button class="delete-icon" on:click={() => deleteUser(user.id)}>
+                <Icon icon="material-symbols:delete" width="24" height="24" />
+              </button>
+            </div>
+          </td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+</div>
 
 <style>
+  .table-container {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    min-width: 700px;
+  }
+
   th,
   td {
     border-bottom: 2px #e0e0e0 solid;

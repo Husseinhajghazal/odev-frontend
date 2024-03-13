@@ -23,7 +23,7 @@
     on:change={handleChange}
   />
 {:else if inputType === "select"}
-  <select class="w-100 p-2" on:change={handleChange}>
+  <select class="w-100 p-2" bind:value on:change={handleChange}>
     {#each options as option}
       <option value={option.value}>{option.option}</option>
     {/each}
@@ -36,6 +36,7 @@
     transition: 300ms ease-in-out;
     border-radius: 10px;
     border: black solid 1px;
+    height: 50px;
   }
 
   input:focus,

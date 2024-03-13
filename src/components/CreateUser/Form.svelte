@@ -1,5 +1,5 @@
 <script>
-  import Input from "./Input.svelte";
+  import Input from "../Input.svelte";
   import SubmitButton from "../SubmitButton.svelte";
   import { createUser } from "../../services/createUser";
   import { options } from "../../Data/UserTypeOptions";
@@ -20,7 +20,7 @@
   on:submit|preventDefault={() => createUser(formData)}
   class="d-flex align-item-center justify-content-center flex-column"
 >
-  <div class="d-flex flex-column flex-md-row mb-5 gap-3">
+  <div class="d-flex flex-column flex-md-row mb-3 gap-3">
     <Input
       inputType="text"
       placeholder="First Name"
